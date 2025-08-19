@@ -233,6 +233,29 @@ footer {
   display: block; /* undgå små mellemrum */
 }
 
+.carousel-heading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  padding: 10px 20px;
+}
+
+.carousel-heading h1 {
+  font-size: 3rem;
+  margin: 0;
+  font-family: "League Spartan", sans-serif;
+}
+
+.carousel-heading p {
+  font-size: 1.45rem;
+  margin-top: -12px;
+}
+
 /* Mobil */
 @media (max-width: 600px) {
   header {

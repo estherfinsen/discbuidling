@@ -32,7 +32,7 @@
             <div class="carousel">
                 <div class="carousel-track">
                     <div class="carousel-slide">
-                        <img src="imgs/billede5.JPG" alt="Disc golf 1">
+                        <img src="imgs/billede6.jpeg" alt="Disc golf 1">
                     </div>
                     <!-- 
                     <div class="carousel-slide">
@@ -45,11 +45,15 @@
                         <img src="imgs/billede4.jpeg" alt="Disc golf 4">
                     </div>
                      -->
+                    <div class="carousel-heading">
+                        <h1>DISC-BUILDING</h1>
+                        <p>En social teambuilding dag i naturen, der samler kollegaerne.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <section>
+        <section id="om-os" class="headers">
             <h2>Om disc-building</h2>
             <p>Disc-Building skaber teambuildingoplevelser med fokus på disc golf – en sjov, anderledes og inkluderende
                 aktivitet, der styrker sammenholdet i jeres virksomhed.
@@ -105,40 +109,39 @@
         </section>
         <section id="kontakt">
             <h2>Kontakt os</h2>
-            <form action="mailto:disc-building@outlook.dk" method="post" enctype="text/plain">
+            <form id="kontakt-form" action="https://formspree.io/f/xnnzkjzr" method="POST">
                 <label for="navn">Navn</label>
-                <input type="text" id="navn" name="navn" required />
+                <input type="text" id="navn" name="Navn" required />
+
                 <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" required />
+                <input type="email" id="email" name="Email" required />
+
                 <label for="besked">Besked</label>
-                <textarea id="besked" name="besked" rows="5" required></textarea>
+                <textarea id="besked" name="Besked" rows="5" required></textarea>
+
+                <!-- Valgfrit: tilpas emne -->
+                <input type="hidden" name="_subject" value="Ny henvendelse fra Disc-Building">
+
                 <button type="submit">Send</button>
+                <p class="form-status" aria-live="polite"></p>
             </form>
         </section>
 
-        <section class="headers">
-            <h2>Om os</h2>
-            <p>Disc-Building startede, fordi jeg ville dele glæden ved disc golf og bruge sporten til at bringe
-                mennesker tættere
-                sammen. Som uddannet lærer, turneringsvinder og skaber af egen disc-golfbane ved jeg, hvordan man
-                kombinerer leg, læring
-                og fællesskab.
-            </p>
-            <p>Målet er enkelt: at give alle – uanset niveau – en sjov, tryg og inkluderende oplevelse, der styrker
-                samarbejdet og skaber minder, der varer ved.</p>
-        </section>
+
+
+
 
     </main>
     <footer>
         <div class="footer-content">
 
             <div class="footer-info">
-                <p>CVR: 12345678</p>
-                <p>Tlf: <a href="tel:+4561699002">+45 12 13 14 15</a></p>
+                <p>CVR: 45793788</p>
+                <p>Tlf: <a href="tel:+4561699002">+45 22 74 55 58</a></p>
                 <p>Mail: <a href="mailto:disc-building@outlook.dk">disc-building@outlook.dk</a></p>
             </div>
             <div class="footer-logo">
-                <img src="imgs/logo.png" alt="Disc-Building logo">
+                <img src="imgs/disc-logo.png" alt="Disc-Building logo">
             </div>
         </div>
         <p class="footer-copy">© 2025 Disc-Building. Alle rettigheder forbeholdes.</p>
@@ -227,5 +230,39 @@
 
         // Justér ved resize (sikrer korrekt transform-beregning)
         window.addEventListener('resize', () => updatePosition(false));
+    })();
+
+
+
+    (function () {
+        const form = document.getElementById('kontakt-form');
+        if (!form) return;
+
+        const statusEl = form.querySelector('.form-status');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            statusEl.textContent = 'Sender...';
+
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (res.ok) {
+                    statusEl.textContent = 'Tak for din besked! Vi vender tilbage snarest.';
+                    form.reset();
+                } else {
+                    const data = await res.json().catch(() => ({}));
+                    statusEl.textContent = data.errors
+                        ? data.errors.map(err => err.message).join(', ')
+                        : 'Noget gik galt. Prøv igen senere.';
+                }
+            } catch (err) {
+                statusEl.textContent = 'Forbindelsesfejl. Prøv igen om lidt.';
+            }
+        });
     })();
 </script>
