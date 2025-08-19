@@ -14,15 +14,10 @@
 
 <body>
     <header>
-        <div>
-            <div class="logo">
-                <div class="disc"></div>
-                <div class="basket"></div>
-                <div class="silhouette"></div>
-                <div class="silhouette"></div>
-                <div class="silhouette"></div>
-            </div>
-            disc-building
+        <div class="header-logo">
+            <a href="/index.html">
+                <img src="imgs/disc-logo.png" alt="Disc-Building logo">
+            </a>
         </div>
         <nav>
             <a href="#pakker">Pakker</a>
@@ -30,7 +25,30 @@
             <a href="#om-os">Om os</a>
         </nav>
     </header>
+
     <main>
+
+        <div class="carousel-container">
+            <div class="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-slide">
+                        <img src="imgs/billede5.JPG" alt="Disc golf 1">
+                    </div>
+                    <!-- 
+                    <div class="carousel-slide">
+                        <img src="imgs/billede2.jpeg" alt="Disc golf 2">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="imgs/billede3.jpeg" alt="Disc golf 3">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="imgs/billede4.jpeg" alt="Disc golf 4">
+                    </div>
+                     -->
+                </div>
+            </div>
+        </div>
+
         <section>
             <h2>Om disc-building</h2>
             <p>Disc-Building skaber teambuildingoplevelser med fokus på disc golf – en sjov, anderledes og inkluderende
@@ -112,9 +130,102 @@
 
     </main>
     <footer>
-        <p>© 2025 disc-building. Alle rettigheder forbeholdes.</p>
+        <div class="footer-content">
+
+            <div class="footer-info">
+                <p>CVR: 12345678</p>
+                <p>Tlf: <a href="tel:+4561699002">+45 12 13 14 15</a></p>
+                <p>Mail: <a href="mailto:disc-building@outlook.dk">disc-building@outlook.dk</a></p>
+            </div>
+            <div class="footer-logo">
+                <img src="imgs/logo.png" alt="Disc-Building logo">
+            </div>
+        </div>
+        <p class="footer-copy">© 2025 Disc-Building. Alle rettigheder forbeholdes.</p>
     </footer>
+
 </body>
 
-
 </html>
+
+
+<script>
+    // Simple slide-left karusel med auto-advance hver 10s
+    (function () {
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(document.querySelectorAll('.carousel-slide'));
+        if (!track || slides.length === 0) return;
+
+        let index = 0;
+        const slideCount = slides.length;
+        let timerId;
+
+        // Sæt korrekt position
+        function updatePosition(animate = true) {
+            if (animate) {
+                track.style.transition = 'transform 0.6s ease-in-out';
+            } else {
+                track.style.transition = 'none';
+            }
+            track.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function nextSlide() {
+            index = (index + 1) % slideCount;
+            updatePosition(true);
+        }
+
+        function startAuto() {
+            stopAuto();
+            timerId = setInterval(nextSlide, 10000); // 10 sek.
+        }
+
+        function stopAuto() {
+            if (timerId) clearInterval(timerId);
+        }
+
+        // Pause ved hover (desktop) for bedre UX
+        const carousel = document.querySelector('.carousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', stopAuto);
+            carousel.addEventListener('mouseleave', startAuto);
+        }
+
+        // (Valgfrit) let touch swipe føles naturligt – kort og enkelt
+        let startX = 0;
+        let deltaX = 0;
+        const threshold = 50; // px før vi skifter slide
+
+        track.addEventListener('touchstart', (e) => {
+            stopAuto();
+            startX = e.touches[0].clientX;
+            deltaX = 0;
+            track.style.transition = 'none';
+        }, { passive: true });
+
+        track.addEventListener('touchmove', (e) => {
+            deltaX = e.touches[0].clientX - startX;
+            const offsetPercent = (deltaX / carousel.clientWidth) * 100;
+            track.style.transform = `translateX(calc(-${index * 100}% + ${offsetPercent}%))`;
+        }, { passive: true });
+
+        track.addEventListener('touchend', () => {
+            if (Math.abs(deltaX) > threshold) {
+                if (deltaX < 0) {
+                    index = (index + 1) % slideCount; // swipe venstre -> næste
+                } else {
+                    index = (index - 1 + slideCount) % slideCount; // swipe højre -> forrige
+                }
+            }
+            updatePosition(true);
+            startAuto();
+        });
+
+        // Init
+        updatePosition(false);
+        startAuto();
+
+        // Justér ved resize (sikrer korrekt transform-beregning)
+        window.addEventListener('resize', () => updatePosition(false));
+    })();
+</script>
