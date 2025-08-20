@@ -84,21 +84,21 @@
                     <h3>disc-building mini</h3>
                     <p>Varighed: 2 timer</p>
                     <p>Længde: 9 huller</p>
-                    <p>Inklusiv: Teambuildingøvelser og præmieoverrækkelse</p>
+                    <p>Inklusiv: Teambuildingøvelse og forplejning</p>
 
                 </div>
                 <div class="pakke">
                     <h3>disc-building classic</h3>
                     <p>Varighed: 3 timer</p>
                     <p>Længde: 18 huller</p>
-                    <p>Inklusiv: Teambuildingøvelser, præmieoverrækkelse og forplejning.</p>
+                    <p>Inklusiv: Teambuildingøvelse, præmieoverrækkelse og forplejning</p>
 
 
                 </div>
                 <div class="pakke">
                     <h3>disc-building plus</h3>
 
-                    <p>Skrædersyet pakke: Sammensæt jeres helt egen oplevelse efter jeres behov.</p>
+                    <p>Skrædersyet pakke: Sammensæt jeres helt egen oplevelse efter jeres behov</p>
 
 
 
@@ -144,13 +144,71 @@
         </div>
         <p class="footer-copy">© 2025 Disc-Building. Alle rettigheder forbeholdes.</p>
     </footer>
+    <div id="cookie-popup" style="
+  position: fixed; 
+  bottom: 20px; 
+  left: 20px; 
+  right: 20px; 
+  background: #fff; 
+  border: 1px solid #ccc; 
+  padding: 15px; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+  border-radius: 10px;
+  display: none;
+  max-width: 400px;
+  margin: auto;
+  z-index: 9999;">
+        <p>Vi bruger cookies for at forbedre din oplevelse. Vil du acceptere?</p>
+        <button id="cookie-accept" style="margin-right: 10px; padding: 6px 12px;">Ja</button>
+        <button id="cookie-decline" style="padding: 6px 12px;">Nej</button>
+    </div>
+
 
 </body>
 
-</html>
-
+</html><!-- Cookie Popup -->
 
 <script>
+    // Funktioner til at sætte og hente cookies
+    function setCookie(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    function getCookie(name) {
+        let cname = name + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim();
+            if (c.indexOf(cname) == 0) {
+                return c.substring(cname.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    // Viser popuppen hvis der ikke er valgt endnu
+    window.onload = function () {
+        if (!getCookie("cookieConsent")) {
+            document.getElementById("cookie-popup").style.display = "block";
+        }
+    };
+
+    // Hvis man trykker ja
+    document.getElementById("cookie-accept").onclick = function () {
+        setCookie("cookieConsent", "accepted", 365);
+        document.getElementById("cookie-popup").style.display = "none";
+    };
+
+    // Hvis man trykker nej
+    document.getElementById("cookie-decline").onclick = function () {
+        setCookie("cookieConsent", "declined", 365);
+        document.getElementById("cookie-popup").style.display = "none";
+    };
+
     // Simple slide-left karusel med auto-advance hver 10s
     (function () {
         const track = document.querySelector('.carousel-track');
